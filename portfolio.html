@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <style>
+        /* Light Mode Variables (Default) */
+        :root {
+            --primary-color: #6c5ce7;
+            --secondary-color: #a29bfe;
+            --bg-color: #f8f9fc;
+            --text-color: #2d3436;
+            --card-bg: #ffffff;
+            --accent: #00cec9;
+            --nav-bg: rgba(255, 255, 255, 0.95);
+            --shadow: rgba(0,0,0,0.05);
+        }
+
+        /* Dark Mode Variables */
+        [data-theme="dark"] {
+            --primary-color: #a29bfe;
+            --secondary-color: #6c5ce7;
+            --bg-color: #1e1e2f;
+            --text-color: #e4e4e7;
+            --card-bg: #2d2d42;
+            --accent: #00cec9;
+            --nav-bg: rgba(30, 30, 47, 0.95);
+            --shadow: rgba(0,0,0,0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--nav-bg);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px var(--shadow);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Dark Mode Button */
+        .theme-toggle {
+            background:rgb(30, 29, 29);
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: var(--text-color);
+            padding: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(20deg);
+        }
+
+        /* Hero / About Section */
+        #about {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 20px;
+            background: linear-gradient(135deg, var(--bg-color) 0%, #ebedee 100%);
+            position: relative;
+        }
+
+        /* Dark gradient fix for hero */
+        [data-theme="dark"] #about {
+            background: linear-gradient(135deg, var(--bg-color) 0%, #12121c 100%);
+        }
+
+        .intro-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease forwards;
+        }
+
+        .intro-content p {
+            font-size: 1.2rem;
+            color: var(--text-color);
+            opacity: 0.8;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            animation: fadeInUp 1s ease 0.2s forwards;
+            opacity: 0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            animation: fadeInUp 1s ease 0.4s forwards;
+            opacity: 0;
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(108, 92, 231, 0.4);
+        }
+
+        /* Section Styling */
+        section {
+            padding: 80px 10%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            font-size: 2.5rem;
+            color: var(--text-color);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 4px;
+            background: var(--primary-color);
+            margin: 10px auto;
+            border-radius: 2px;
+        }
+
+        /* Background Section */
+        #background {
+            background: var(--card-bg);
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline-item {
+            padding: 20px;
+            background: var(--bg-color);
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border-left: 5px solid var(--primary-color);
+            opacity: 0;
+            transform: translateX(-50px);
+        }
+
+        .timeline-item.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .project-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px var(--shadow);
+            position: relative;
+            height: 350px;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px var(--shadow);
+        }
+
+        .project-info {
+            padding: 20px;
+        }
+
+        .tech-stack span {
+            display: inline-block;
+            background: var(--bg-color);
+            color: var(--primary-color);
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        /* Skills */
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .skill-box {
+            background: var(--card-bg);
+            padding: 20px 40px;
+            border-radius: 10px;
+            font-weight: 600;
+            box-shadow: 0 2px 10px var(--shadow);
+            cursor: default;
+        }
+
+        .skill-box:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* Contact Section */
+        #contact {
+            background: #1e272e; /* Keeping this dark for both themes for contrast */
+            color: white;
+            text-align: center;
+        }
+
+        .contact-info {
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .social-icons a {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 1.5rem;
+            width: 50px;
+            height: 50px;
+            border: 2px solid white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+
+        .social-icons a:hover {
+            background: white;
+            color: var(--primary-color);
+            transform: rotate(50deg);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .fade-in.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links { gap: 1rem; }
+            .intro-content h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">Alisha Laraib Khokhar</div>
+        <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <!-- Dark Mode Toggle Button -->
+            <li>
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                    <img src="https://img.icons8.com/ios-filled/24/ffffff/lamp.png" alt="Dark Mode" />
+                    <i class="fas fa-moon"></i>
+                </button>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- About / Introduction -->
+    <section id="about">
+        <div class="intro-content">
+            <h1>Hello, I'm <span style="color: var(--primary-color);">Alisha </span></h1>
+            <p>I’m passionate about learning new things, exploring creative ideas, 
+    and building projects that challenge me. I enjoy working with technology, experimenting 
+    with code, and sharing my knowledge with others.In my free time, I love immersing myself in books and exploring 
+    different worlds through reading. Poetry writing is another passion of mine it allows 
+    me to express my thoughts and emotions creatively. I believe both reading and writing 
+    help me grow, inspire new ideas, and bring peace to my everyday life.
+</p>
+            <a href="#projects" class="btn">View My Work</a>
+        </div>
+    </section>
+
+    <!-- Background -->
+    <section id="background">
+        <h2 class="section-title">Background</h2>
+        <div class="timeline">
+            <div class="timeline-item fade-in">
+                <h3>Bachelor of Science in Computer Science</h3>
+                <p>Sarghodha University | 2024 - 2028</p>
+                <p>learning problem‑solving, programming, and the art of turning ideas into technology.</p>
+            </div>
+            <div class="timeline-item fade-in">
+                <h3>FSC in Pre Engineering</h3>
+                <p>Grace College Of Sciences | 2022 - 2024</p>
+                <p>I completed my FSc in Pre‑Engineering, where I built a strong foundation in mathematics and science that supports my journey in Computer Science.
+</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience -->
+    <section id="experience" style="background: var(--card-bg);">
+        <h2 class="section-title">Work Experience</h2>
+        <div class="timeline">
+            <div class="timeline-item fade-in">
+                <h3>Senior Frontend Developer</h3>
+                <p>TechCorp Inc. | 2022 - Present</p>
+                <p>Led the migration of legacy code to React, improving load times by 40%.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects">
+        <h2 class="section-title">Featured Projects</h2>
+        <div class="projects-grid">
+            <div class="project-card fade-in">
+                <div style="height: 150px; background: var(--primary-color);"></div>
+                <div class="project-info">
+                    <h3>About Me Card</h3>
+                    <p>MyCard is a simple project designed to showcase personal information in a clean and stylish card format. 
+    It highlights key details like name, education, and hobbies.</p>
+                    <div class="tech-stack">
+                        <span>Html</span> <span>Css</span>
+                    </div>
+                </div>
+            </div>
+            <div class="project-card fade-in">
+                <div style="height: 150px; background: var(--accent);"></div>
+                <div class="project-info">
+                    <h3>My Library</h3>
+                    <p>This library website is designed to provide easy access to books and resources. 
+    Readers can explore different categories.</p>
+                    <div class="tech-stack">
+                        <span>html</span> <span>Css</span>
+                    </div>
+                </div>
+            </div>
+            <div class="project-card fade-in">
+                <div style="height: 150px; background: #fd79a8;"></div>
+                <div class="project-info">
+                    <h3>To-Do-List</h3>
+                    <p>A simple and efficient task management app that allows users to add, edit, and delete tasks.</p>
+                    <div class="tech-stack">
+                        <span>javascript</span> <span>python</span> <span>Flask</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills -->
+    <section id="skills" style="background: var(--card-bg);">
+        <h2 class="section-title">Technical Skills</h2>
+        <div class="skills-container">
+            <div class="skill-box">C++</div>
+            <div class="skill-box">Html</div>
+            <div class="skill-box">Python</div>
+            <div class="skill-box">Css</div>
+            <div class="skill-box">Wordsmith </div>
+            <div class="skill-box">Java</div>
+            <div class="skill-box">JavaScript</div>
+
+        </div>
+    </section>
+     <!-- Testimonials -->
+    <section id="testimonials">
+        <h2 class="section-title">Testimonials</h2>
+        <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+            <div class="fade-in" style="background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+                <p style="font-style: italic; font-size: 1.2rem;">"Alisha is an exceptional developer who consistently delivers high-quality code. Her ability to solve complex problems under pressure is remarkable."</p>
+                <br>
+                <strong>Jane Smith</strong>
+                <p>CTO, TechCorp Inc.</p>
+            </div>
+        </div>
+    </section>
+    <!-- Blog & Achievements Combined for Flow -->
+    <section id="extra" style="background: white;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 50px;">
+            <div>
+                <h2 class="section-title" style="text-align: left;">Articles</h2>
+                <div class="timeline-item fade-in">
+                    <h4>The Future of Artificial Intelligence in Education</h4>
+                    <p>Artificial Intelligence (AI) is rapidly transforming classrooms across the world.
+                         From personalized learning apps to automated grading systems, 
+                         AI is helping teachers save time and focus more on students.</p>
+                    <a href="#" style="color: var(--primary-color);">Read More →</a>
+                </div>
+                <div class="timeline-item fade-in" style="margin-top: 20px;">
+                    <h4>Balancing Creativity and Logic in Daily Life.</h4>
+                    <p>Life often demands both imagination and rational thinking. 
+                        Creativity helps us dream big, while logic ensures those dreams are achievable.</p>
+                    <a href="#" style="color: var(--primary-color);">Read More →</a>
+                </div>
+            </div>
+            <div>
+                <h2 class="section-title" style="text-align: left;">Achievements</h2>
+                <div class="timeline-item fade-in">
+                    <h4>🤝 Leadership Award</h4>
+                    <p>Best Team Lead at Student Council 2023 </p>
+                </div>
+                <div class="timeline-item fade-in" style="margin-top: 20px;">
+                    <h4>Poetry Talent</h4>
+                    <p>Winner of Grace College Poetry Competition 2024.</p>
+                </div>
+                <div class="timeline-item fade-in" style="margin-top: 20px;">
+                    <h4>School Achievements</h4>
+                    <p>Best Speaker Award at School Debate Competition 2021</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+        <h2 class="section-title" style="color: white;">Get In Touch</h2>
+        <p class="contact-info">Ready to work together? Let's connect.</p>
+        <p>Email: <a href="mailto:alishalaraib2006@gmail.com" style="color: var(--secondary-color);">alishalaraib2006@gmail.com</a></p>
+        
+        <div class="social-icons">
+            <a href="www.linkedin.com/in/alisha-laraib-khokhar-6982533a7"><img src="https://img.icons8.com/ios-filled/50/ffffff/linkedin.png" alt="LinkedIn" width="30" height="30"/></a>
+            <a href="https://github.com/alishacore"><img src="https://img.icons8.com/ios-filled/50/ffffff/github.png" alt="GitHub" width="30" height="30"/></a>
+            <a href="https://www.instagram.com/delu_sion_al?igsh=cGRlaThvMHdsdjNy"><img src="https://img.icons8.com/ios-filled/50/ffffff/instagram-new.png" alt="Instagram" width="30" height="30"/></a>
+            <a href="https://x.com/Alisha406311006"><img src="https://img.icons8.com/ios-filled/50/ffffff/twitter.png" alt="Twitter" width="30" height="30"/></a>
+            <a href="https://www.tiktok.com/@alisha.khokhar15?_r=1&_t=ZS-94KSJUZyof2"><img src="https://img.icons8.com/ios-filled/50/ffffff/tiktok.png" alt="TikTok" width="30" height="30"/></a>
+        </div>
+        </div>
+    </section>
+<script>
+        // --- Dark Mode Logic ---
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        const icon = themeToggle.querySelector('i');
+
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            body.setAttribute('data-theme', 'dark');
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            }
+        });
+
+
+        // --- Scroll Animation Logic ---
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in, .timeline-item').forEach(el => {
+            observer.observe(el);
+        });
+
+        // --- Smooth Scroll ---
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+    
+</body>
+</html>
